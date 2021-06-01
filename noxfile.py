@@ -9,3 +9,9 @@ def tests(session):
             '--prefix', 
             session.virtualenv.location)
     session.run('pytest')
+
+@nox.session(python=["3.8"],venv_backend="conda")
+def lint(session):
+    session.conda_install('flake8')
+    session.run('flake8', '--import-order-style=google')
+
