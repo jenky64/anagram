@@ -270,7 +270,7 @@ class Generator:
 
 if __name__ == '__main__':
     am = Generator()
-    am.db_name = 'scrabble.db'
+    am.db_name = 'collins.db'
     am.initialize_db()
     am.set_word('stop')
     am.generate_anagrams()

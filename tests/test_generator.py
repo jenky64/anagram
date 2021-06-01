@@ -1,7 +1,7 @@
-from anagram.anagramgenerator import AnagramGenerator
+from anagram.generator import Generator
 import pytest
 
-generator = AnagramGenerator()
+generator = Generator()
 
 
 @pytest.mark.order(1)
