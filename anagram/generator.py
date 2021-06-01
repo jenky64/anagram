@@ -6,7 +6,7 @@ from model import database, Words
 from peewee import *
 
 
-class AnagramGenerator:
+class Generator:
     """
     A simple anagram generator.
 
@@ -269,7 +269,7 @@ class AnagramGenerator:
 
 
 if __name__ == '__main__':
-    am = AnagramGenerator()
+    am = Generator()
     am.db_name = 'scrabble.db'
     am.initialize_db()
     am.set_word('stop')

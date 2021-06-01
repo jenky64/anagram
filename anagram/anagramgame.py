@@ -4,7 +4,7 @@ import argparse
 import re
 import sys
 
-from anagram.anagramgenerator import AnagramGenerator
+from anagram.generator import Generator
 
 parser = argparse.ArgumentParser()
 parser.add_argument('-d', '--database', help='database to use')
@@ -21,7 +21,7 @@ else:
 
 class AnagramGame:
     """
-    A simple game wrapper for the AnagramGenerator object
+    A simple game wrapper for the Generator object
     """
 
     def __init__(self, db_name: str = database_name) -> None:
