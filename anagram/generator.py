@@ -2,7 +2,7 @@
 
 from pprint import pprint
 from itertools import combinations
-from model import database, Words
+from anagram.model import database, Words
 from peewee import *
 
 

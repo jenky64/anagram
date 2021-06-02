@@ -1,5 +1,6 @@
 from anagram.create_db import set_names, process_word
 
+
 def test_names():
     fname = 'words.txt'
     db_name, outfile = set_names(fname)
