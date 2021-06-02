@@ -22,6 +22,7 @@ else:
 class AnagramGame:
     """
     A simple game wrapper for the Generator object
+    really a fake anagrammer
     """
 
     def __init__(self, db_name: str = database_name) -> None:
