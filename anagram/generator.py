@@ -278,6 +278,6 @@ if __name__ == '__main__':
     am.set_word(word='development', size=7)
     am.generate_anagrams()
     am.print_anagrams()
-    am.set_word(word='python', size>=3)
+    am.set_word(word='python', min_size=3, max_size=7)
     am.generate_anagrams()
     am.print_anagrams()
