@@ -1,4 +1,4 @@
-FROM miniconda3-3.8:latest
+FROM continuumio/miniconda3:latest
 
 WORKDIR /app
 
