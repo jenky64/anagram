@@ -7,7 +7,7 @@ COPY package-list.txt noxfile.py /app/
 COPY anagram /app/anagram/
 COPY tests /app/tests/
 
-RUN conda install nox=2020.12.13
+RUN conda install nox
 RUN conda develop /app
 
 RUN ["nox", "-s", "tests"]
