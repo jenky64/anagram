@@ -8,7 +8,7 @@ def tests(session):
             '.',
             '--prefix', 
             session.virtualenv.location)
-    session.run('pytest', '-v', --html=test_results.html")
+    session.run('pytest', '-v', '--html=test_results.html')
 
 @nox.session(python=["3.8"],venv_backend="conda")
 def lint(session):
