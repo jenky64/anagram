@@ -7,7 +7,7 @@ generator = Generator()
 
 @pytest.mark.order(1)
 def test_initialize_db():
-    db_name = '/'.join((str(Path(__file__).resolve().parent),'collins.db'))
+    db_name = '/'.join([str(Path(__file__).resolve().parent), 'collins.db'])
 
     generator.initialize_db(db_name=db_name)
     table = generator.database.get_tables()[0]
