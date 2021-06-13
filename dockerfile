@@ -8,6 +8,6 @@ COPY tests /app/tests/
 
 RUN conda develop /app
 
-RUN ["nox", "-s", "tests", "-r"]
+RUN ["nox", "-R", -s", "tests"]
 
 CMD tail -f /dev/null
