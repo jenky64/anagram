@@ -1,5 +1,13 @@
-FROM continuumio/miniconda3:latest
+FROM l2lcommit:v1
 
-RUN conda config --add channels conda-forge
-RUN conda install nox conda-build
+WORKDIR /app
 
+COPY package-list.txt noxfile.py /app/
+COPY anagram /app/anagram/
+COPY tests /app/tests/
+
+RUN conda develop /app
+
+RUN ["nox", "-s", "tests", "-r"]
+
+CMD tail -f /dev/null
