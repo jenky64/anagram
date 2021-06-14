@@ -2,7 +2,7 @@ import nox
 
 @nox.session(python=["3.7","3.8"],venv_backend="conda",reuse_venv=True)
 def tests(session):
-    session.conda_install('--channel=conda-forge', '--file', 'package-list.txt')
+    session.conda_install('--channel=conda-forge', '--file', 'module-list.txt')
     session.run('conda', 
             'develop', 
             '.',
