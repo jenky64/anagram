@@ -1,0 +1,6 @@
+FROM continuumio/miniconda3:latest
+
+COPY testing-modules-list.txt .
+
+RUN conda config --add channels conda-forge
+RUN conda install --file=testing-modules-list.txt
