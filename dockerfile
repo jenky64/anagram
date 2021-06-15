@@ -1,9 +1,11 @@
-FROM l2lcommit:v3
+FROM continuumio/miniconda3:latest
 
 WORKDIR /app
 
-COPY module-list.txt noxfile.py runtests.sh /app/
-COPY anagram /app/anagram/
-COPY tests /app/tests/
+COPY testing-modules-list.txt /app 
 
-CMD echo "done building docker image"
+RUN chmod 777 /app && \
+    conda config --add channels conda-forge && \
+    conda install --file=testing-modules-list.txt
+
+ENTRYPOINT ["/bin/bash"]
