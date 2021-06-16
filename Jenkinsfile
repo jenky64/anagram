@@ -15,6 +15,8 @@ pipeline {
         stage("Configure") {
             steps {
 
+                sh 'DIR=$(echo ${env.GIT_URL} | awk "-F/" "{print $NF}" | cut -d"." -f1)'
+                sh "echo ${DIR}"
                 script {
                     echo "git commit: ${env.GIT_COMMIT}"
                     echo "git branch: ${env.GIT_BRANCH}"
@@ -22,8 +24,8 @@ pipeline {
                     echo "git previous commit: ${env.GIT_PREVIOUS_COMMIT}"
                     echo "git author name: ${env.GIT_AUTHOR_NAME}"
                     echo "git author: ${env.GIT_AUTHOR_EMAIL}"
-                    DIR=sh(returnStdout: true, script: "echo ${env.GIT_URL} | awk '-F/' '{print \\\$NF}' | cut -d'.' -f1").trim()
-                    echo "DIR = ${DIR}"
+                    //DIR=sh(returnStdout: true, script: "echo ${env.GIT_URL} | awk '-F/' '{print \\\$NF}' | cut -d'.' -f1").trim()
+                    //echo "DIR = ${DIR}"
                 }
 
             }
