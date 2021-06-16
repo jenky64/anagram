@@ -14,7 +14,7 @@ pipeline {
     stages {
         stage("Configure") {
             steps {
-
+                sh 'ls -l'
                 script {
                     echo "git commit: ${env.GIT_COMMIT}"
                     echo "git branch: ${env.GIT_BRANCH}"
