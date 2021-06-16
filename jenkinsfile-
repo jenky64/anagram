@@ -1,0 +1,61 @@
+pipeline {
+    agent any
+
+    environment {
+        BASE_DIR='/jenkins'
+        SCRIPT_DIR="${env.BASE_DIR}/scripts"
+        VOLUME_DIR='/volumes'
+        REPO_NAME=""
+        MKDIR=""
+        VALIDIMAGE='false'
+        REUSE='false'
+    }
+
+    stages {
+        stage("Configure") {
+            steps {
+                //sh "ls -l ${env.SCRIPT_DIR}"
+                script {
+                    echo "checking for repository branch volume directory..."
+                    MKDIR = sh(returnStdout: true, script: "/usr/bin/python3 ${env.SCRIPT_DIR}/configure.py -d davidj").trim()
+                    if (MKDIR == 'true') {
+                        echo "repository branch volume directory /volumes/davidj successfully created."
+                    } else {
+                        echo "repository branch volume directory /volumes/davidj already exists."
+                    }
+
+                    echo "checking if nox environments can be reused..."
+                    REUSE = sh(returnStdout: true, script: "/usr/bin/python3 ${env.SCRIPT_DIR}/configure.py -r").trim()
+                    if (REUSE == 'true') {
+                        echo "nox virtual environments can be reused."
+                    } else {
+                        echo "nox virtual environments cannot be reused. This will extend the testing time."
+                    }
+
+                    echo "checking if docker image requires rebuilding..."
+                    VALIDIMAGE = sh(returnStdout: true, script: "/usr/bin/python3 ${env.SCRIPT_DIR}/configure.py -i").trim()
+                    if (VALIDIMAGE == 'false') {
+                        echo "docker image requires rebuilding."
+                    } else {
+                        echo "docker image verified."
+                    }
+                }
+            }
+        }
+        stage("BuildDockerImage") {
+            when {
+                expression {
+                    VALIDIMAGE == 'false'
+                }
+            }
+            steps {
+                echo "rebuilding docker image"
+            }
+        }
+        stage("RunningTests") {
+            steps {
+                echo "running tests"
+            }
+        }
+    }
+}
