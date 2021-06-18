@@ -22,7 +22,18 @@ pipeline {
                     echo "git previous commit: ${env.GIT_PREVIOUS_COMMIT}"
                     echo "git author name: ${env.GIT_AUTHOR_NAME}"
                     echo "git author: ${env.GIT_AUTHOR_EMAIL}"
+
+                   echo "checking for repository branch volume directory..."
                     DIR=sh(returnStdout: true, script: 'pwd')
+                    MKDIR = sh(returnStdout: true, script: "/usr/bin/python3 ${env.SCRIPT_DIR}/configure.py -d ${DIR}").trim()
+                    if (MKDIR == 'true') {
+                        echo "repository branch volume directory ${DIR} successfully created."
+                    } else {
+                        echo "repository branch volume directory ${DIR} already exists."
+                    }
+
+
+
                     //DIR=sh(returnStdout: true, script: "echo ${env.GIT_URL} | cut -d'/' -f5 | cut -d'.' -f1").trim()
                     //DIR=sh(returnStdout: true, script: "echo /volumes/${DIR}/${GIT_BRANCH}/").trim()
                     echo "DIR = ${DIR}"
