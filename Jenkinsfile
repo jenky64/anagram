@@ -23,16 +23,16 @@ pipeline {
                     echo "git previous commit: ${env.GIT_PREVIOUS_COMMIT}"
 
                     //def JOBDIR = JOB_NAME.replace('/','_')
-                    env.JOBDIR = JOB_NAME.replace('/','_')
-                    echo "JOBDIR = ${env.JOBDIR}"
+                    JOBDIR = JOB_NAME.replace('/','_')
+                    echo "JOBDIR = ${JOBDIR}"
 
                     echo "checking for repository branch volume directory..."
-                    MKDIR = sh(returnStdout: true, script: "/usr/bin/python3 ${env.SCRIPT_DIR}/configure.py -d ${env.JOBDIR}").trim()
+                    MKDIR = sh(returnStdout: true, script: "/usr/bin/python3 ${env.SCRIPT_DIR}/configure.py -d ${JOBDIR}").trim()
                     echo "mkdir = ${MKDIR}"
                     if (MKDIR == 'true') {
-                        echo "repository branch volume directory ${env.JOBDIR} successfully created."
+                        echo "repository branch volume directory ${JOBDIR} successfully created."
                     } else {
-                        echo "repository branch volume directory ${env.JOBDIR} already exists."
+                        echo "repository branch volume directory ${JOBDIR} already exists."
                     }
                 }
             }
@@ -40,7 +40,7 @@ pipeline {
         stage("Next") {
             steps {
                 script {
-                    echo "volume directory = ${env.JOBDIR}"
+                    echo "volume directory = ${JOBDIR}"
                 }
             }
         }
