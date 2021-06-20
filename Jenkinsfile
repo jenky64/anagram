@@ -28,8 +28,13 @@ pipeline {
                     def JOBPARTS = JOB_NAME.split('/')
                     def JP1 =  JOBPARTS[0]
                     def JP2 = JOBPARTS[1]
+                    //def JOBDIR = JOBPARTS[0] + '_' + JOBPARTS[1]
+                    def JOBDIR = JOBPARTS.join('_')
+                    def JOBDIR1 = JOB_NAME.replace('/','_')
                     echo "JP1 = ${JP1}"
                     echo "JP2 = ${JP2}"
+                    echo "JOBDIR = ${JOBDIR}"
+                    echo "JOBDIR1 = ${JOBDIR1}"
 
 
                    echo "checking for repository branch volume directory..."
