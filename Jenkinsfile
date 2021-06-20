@@ -25,26 +25,17 @@ pipeline {
                     echo "job name: ${env.JOB_NAME}"
                     echo "job base name: ${env.JOB_BASE_NAME}"
 
-                    def JOBPARTS = JOB_NAME.split('/')
-                    def JP1 =  JOBPARTS[0]
-                    def JP2 = JOBPARTS[1]
-                    //def JOBDIR = JOBPARTS[0] + '_' + JOBPARTS[1]
-                    def JOBDIR = JOBPARTS.join('_')
-                    def JOBDIR1 = JOB_NAME.replace('/','_')
-                    echo "JP1 = ${JP1}"
-                    echo "JP2 = ${JP2}"
+                    def JOBDIR = JOB_NAME.replace('/','_')
                     echo "JOBDIR = ${JOBDIR}"
-                    echo "JOBDIR1 = ${JOBDIR1}"
 
 
-                   echo "checking for repository branch volume directory..."
-                    DIR=sh(returnStdout: true, script: 'pwd')
-                    MKDIR = sh(returnStdout: true, script: "/usr/bin/python3 ${env.SCRIPT_DIR}/configure.py -d ${DIR}").trim()
+                    echo "checking for repository branch volume directory..."
+                    MKDIR = sh(returnStdout: true, script: "/usr/bin/python3 ${env.SCRIPT_DIR}/configure.py -d ${JOBDIR}").trim()
                     echo "mkdir = ${MKDIR}"
                     if (MKDIR == 'true') {
-                        echo "repository branch volume directory ${DIR} successfully created."
+                        echo "repository branch volume directory ${JOBDIR} successfully created."
                     } else {
-                        echo "repository branch volume directory ${DIR} already exists."
+                        echo "repository branch volume directory ${JOBDIR} already exists."
                     }
 
 
