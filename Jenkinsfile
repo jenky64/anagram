@@ -22,6 +22,8 @@ pipeline {
                     echo "git previous commit: ${env.GIT_PREVIOUS_COMMIT}"
                     echo "git author name: ${env.GIT_AUTHOR_NAME}"
                     echo "git author: ${env.GIT_AUTHOR_EMAIL}"
+                    echo "job name: ${env.JOB_NAME}"
+                    echo "job base name: ${env.JOB_BASE_NAME}"
 
                    echo "checking for repository branch volume directory..."
                     DIR=sh(returnStdout: true, script: 'pwd')
