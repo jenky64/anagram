@@ -15,7 +15,7 @@ pipeline {
     }
 
     stages {
-        stage("Configure") {
+        /* stage("Configure") {
             steps {
                 sh 'ls -l'
                 script {
@@ -52,7 +52,7 @@ pipeline {
                     }
                 }
             }
-        }
+        } */
         stage("DockerRebuild") {
             when {
                 expression {
@@ -62,20 +62,9 @@ pipeline {
             steps {
                 script {
                     echo "Rebuilding docker image..."
-                    sh """
-                       docker build -t l2lcommit .
-                    """
-                }
-            }
-        }
-        stage("RunTests") {
-            steps {
-                script {
                     echo "Running tests..."
-                    //sh """
-                    //   docker build -t l2lcommit .
-                    //"""
-                    BUILD_IMAGE = sh(returnStdout: true, script: "/usr/bin/python3 ${env.SCRIPT_DIR}/validate.py -d ${env.WORKSPACE}").trim()
+                    echo "workspace = ${env.WORKSPACE}"
+                    BUILD_IMAGE = sh(returnStdout: true, script: "/usr/bin/python3 ${env.SCRIPT_DIR}/docker1.py -d ${env.WORKSPACE}").trim()
                     echo "build_image = ${BUILD_IMAGE}"
                     if (BUILD_IMAGE == 'true') {
                         echo "Docker image rebuild passed."
@@ -83,6 +72,12 @@ pipeline {
                         echo "Docker image rebuild failed.."
                     }
                 }
+            }
+        }
+        stage("RunTests") {
+            steps {
+                script {
+                    echo "running tests"
             }
         }
     }
