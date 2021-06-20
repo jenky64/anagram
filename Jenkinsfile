@@ -43,6 +43,7 @@ pipeline {
                 script {
                     echo "validating docker image..."
                     VALID_IMAGE = sh(returnStdout: true, script: "/usr/bin/python3 ${env.SCRIPT_DIR}/validate.py -d ${env.WORKSPACE}").trim()
+                    echo "valid_image = ${VALID_IMAGE}"
                     if (VALID_IMAGE == 'true') {
                         echo "Docker image validation passed."
                     } else {
