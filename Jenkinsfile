@@ -33,10 +33,10 @@ pipeline {
                     echo "mkdir = ${MKDIR}"
                     if (MKDIR == 'true') {
                         echo "repository branch volume directory ${JOB_DIR} successfully created."
-                        sh 'cp dockerfile ${VOLUME_PATH}'
-                        sh 'cp modules-list.txt ${VOLUME_PATH}'
-                        sh 'cp testing-modules-list.txt ${VOLUME_PATH}'
-                        sh 'cp noxfile.py ${VOLUME_PATH}'
+                        //sh 'cp dockerfile ${VOLUME_PATH}'
+                        //sh 'cp modules-list.txt ${VOLUME_PATH}'
+                        //sh 'cp testing-modules-list.txt ${VOLUME_PATH}'
+                        //sh 'cp noxfile.py ${VOLUME_PATH}'
                     } else {
                         echo "repository branch volume directory ${JOB_DIR} already exists."
                     }
