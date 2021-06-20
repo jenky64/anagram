@@ -64,7 +64,7 @@ pipeline {
                     echo "Rebuilding docker image..."
                     echo "Running tests..."
                     echo "workspace = ${env.WORKSPACE}"
-                    BUILD_IMAGE = sh(returnStdout: true, script: "/usr/bin/python3 ${env.SCRIPT_DIR}/docker1.py -d ${env.WORKSPACE}").trim()
+                    BUILD_IMAGE = sh(returnStdout: true, script: "/usr/bin/python3 ${env.SCRIPT_DIR}/docker1.py -b -d ${env.WORKSPACE}").trim()
                     echo "build_image = ${BUILD_IMAGE}"
                     if (BUILD_IMAGE == 'true') {
                         echo "Docker image rebuild passed."
