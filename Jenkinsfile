@@ -25,7 +25,7 @@ pipeline {
                     echo "job name: ${env.JOB_NAME}"
                     echo "job base name: ${env.JOB_BASE_NAME}"
 
-                    def JOBPARTS = JOB_NAME.tokenize('/') as string[]
+                    def JOBPARTS = JOB_NAME.split('/')
                     def JP1 =  JOBPARTS[0]
                     def JP2 = JOBPARTS[1]
                     echo "JP1 = ${JP1}"
