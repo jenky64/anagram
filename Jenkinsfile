@@ -25,6 +25,13 @@ pipeline {
                     echo "job name: ${env.JOB_NAME}"
                     echo "job base name: ${env.JOB_BASE_NAME}"
 
+                    def JOBPARTS = JOB_NAME.tokenize('/') as string[]
+                    def JP1 =  JOBPARTS[0]
+                    def JP2 = JOBPARTS[1]
+                    echo "JP1 = ${JP1}"
+                    echo "JP2 = ${JP2}"
+
+
                    echo "checking for repository branch volume directory..."
                     DIR=sh(returnStdout: true, script: 'pwd')
                     MKDIR = sh(returnStdout: true, script: "/usr/bin/python3 ${env.SCRIPT_DIR}/configure.py -d ${DIR}").trim()
