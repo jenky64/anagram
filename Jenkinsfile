@@ -25,7 +25,7 @@ pipeline {
 
                     //def JOBDIR = JOB_NAME.replace('/','_')
                     JOBDIR = JOB_NAME.replace('/','_')
-                    VOLUME_PATH = [${VOLUME_DIR}, ${JOB_DIR}].join('/')
+                    VOLUME_PATH = [VOLUME_DIR, JOB_DIR].join('/')
                     echo "JOBDIR = ${JOBDIR}"
 
                     echo "checking for repository branch volume directory..."
