@@ -28,26 +28,38 @@ pipeline {
                     echo "JOB_DIR = ${JOB_DIR}"
 
                     echo "checking for repository branch volume directory..."
-                    //MKDIR = sh(returnStdout: true, script: "/usr/bin/python3 ${env.SCRIPT_DIR}/configure.py -d ${JOB_DIR}").trim()
                     MKDIR = sh(returnStdout: true, script: "/usr/bin/python3 ${env.SCRIPT_DIR}/configure.py -d ${env.WORKSPACE}").trim()
                     echo "mkdir = ${MKDIR}"
                     if (MKDIR == 'true') {
                         echo "repository branch volume directory ${JOB_DIR} successfully created."
-                        //sh 'cp dockerfile ${VOLUME_PATH}'
-                        //sh 'cp modules-list.txt ${VOLUME_PATH}'
-                        //sh 'cp testing-modules-list.txt ${VOLUME_PATH}'
-                        //sh 'cp noxfile.py ${VOLUME_PATH}'
                     } else {
                         echo "repository branch volume directory ${JOB_DIR} already exists."
                     }
                 }
             }
         }
-        stage("Test") {
+        stage("DockerCheck") {
             steps {
                 script {
-                    echo "volume directory = ${JOB_DIR}"
-                    echo "full path = ${VOLUME_PATH}"
+                    echo "validating docker image..."
+                    VALID_IMAGE = sh(returnStdout: true, script("/usr/bin/python3 ${env.SCRIPT_DIR}/validate.py -d ${env.WORKSPACE}").trim()
+                    if (VALID_IMAGE == 'true') {
+                        echo "Docker image validation passed."
+                    } else {
+                        echo "Docker image validation failed. Rebuild required."
+                    }
+                }
+            }
+        }
+        stage("DockerRebuild") {
+            when {
+                expression {
+                    VALID_IMAGE == 'false'
+                }
+            }
+            steps {
+                script {
+                    echo "Rebuilding docker image..."
                 }
             }
         }
