@@ -7,9 +7,9 @@ pipeline {
         VOLUME_DIR='/volumes'
         REPO_NAME=""
         MKDIR=""
-        VALIDIMAGE='false'
+        VALID_IMAGE='false'
         REUSE='false'
-        JOBDIR=""
+        JOB_DIR=""
         VOLUME_PATH=""
     }
 
@@ -23,26 +23,30 @@ pipeline {
                     echo "git url: ${env.GIT_URL}"
                     echo "git previous commit: ${env.GIT_PREVIOUS_COMMIT}"
 
-                    //def JOBDIR = JOB_NAME.replace('/','_')
-                    JOBDIR = JOB_NAME.replace('/','_')
-                    VOLUME_PATH = [VOLUME_DIR, JOBDIR].join('/')
-                    echo "JOBDIR = ${JOBDIR}"
+                    JOB_DIR = JOB_NAME.replace('/','_')
+                    VOLUME_PATH = [VOLUME_DIR, JOB_DIR].join('/')
+                    echo "JOB_DIR = ${JOB_DIR}"
 
                     echo "checking for repository branch volume directory..."
-                    MKDIR = sh(returnStdout: true, script: "/usr/bin/python3 ${env.SCRIPT_DIR}/configure.py -d ${JOBDIR}").trim()
+                    //MKDIR = sh(returnStdout: true, script: "/usr/bin/python3 ${env.SCRIPT_DIR}/configure.py -d ${JOB_DIR}").trim()
+                    MKDIR = sh(returnStdout: true, script: "/usr/bin/python3 ${env.SCRIPT_DIR}/configure.py -d ${env.WORKSPACE}").trim()
                     echo "mkdir = ${MKDIR}"
                     if (MKDIR == 'true') {
-                        echo "repository branch volume directory ${JOBDIR} successfully created."
+                        echo "repository branch volume directory ${JOB_DIR} successfully created."
+                        sh 'cp dockerfile ${VOLUME_PATH}'
+                        sh 'cp modules-list.txt ${VOLUME_PATH}'
+                        sh 'cp testing-modules-list.txt ${VOLUME_PATH}'
+                        sh 'cp noxfile.py ${VOLUME_PATH}'
                     } else {
-                        echo "repository branch volume directory ${JOBDIR} already exists."
+                        echo "repository branch volume directory ${JOB_DIR} already exists."
                     }
                 }
             }
         }
-        stage("Next") {
+        stage("Test") {
             steps {
                 script {
-                    echo "volume directory = ${JOBDIR}"
+                    echo "volume directory = ${JOB_DIR}"
                     echo "full path = ${VOLUME_PATH}"
                 }
             }
