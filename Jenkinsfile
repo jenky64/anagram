@@ -10,6 +10,7 @@ pipeline {
         VALIDIMAGE='false'
         REUSE='false'
         JOBDIR=""
+        VOLUME_PATH=""
     }
 
     stages {
@@ -24,6 +25,7 @@ pipeline {
 
                     //def JOBDIR = JOB_NAME.replace('/','_')
                     JOBDIR = JOB_NAME.replace('/','_')
+                    VOLUME_PATH = [${VOLUME_DIR}, ${JOB_DIR}].join('/')
                     echo "JOBDIR = ${JOBDIR}"
 
                     echo "checking for repository branch volume directory..."
@@ -41,6 +43,7 @@ pipeline {
             steps {
                 script {
                     echo "volume directory = ${JOBDIR}"
+                    echo "full path = ${VOLUME_PATH}"
                 }
             }
         }
