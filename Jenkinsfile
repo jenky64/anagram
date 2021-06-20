@@ -9,6 +9,7 @@ pipeline {
         MKDIR=""
         VALIDIMAGE='false'
         REUSE='false'
+        JOBDIR=""
     }
 
     stages {
@@ -20,31 +21,27 @@ pipeline {
                     echo "git branch: ${env.GIT_BRANCH}"
                     echo "git url: ${env.GIT_URL}"
                     echo "git previous commit: ${env.GIT_PREVIOUS_COMMIT}"
-                    echo "git author name: ${env.GIT_AUTHOR_NAME}"
-                    echo "git author: ${env.GIT_AUTHOR_EMAIL}"
-                    echo "job name: ${env.JOB_NAME}"
-                    echo "job base name: ${env.JOB_BASE_NAME}"
 
-                    def JOBDIR = JOB_NAME.replace('/','_')
-                    echo "JOBDIR = ${JOBDIR}"
-
+                    //def JOBDIR = JOB_NAME.replace('/','_')
+                    env.JOBDIR = JOB_NAME.replace('/','_')
+                    echo "JOBDIR = ${env.JOBDIR}"
 
                     echo "checking for repository branch volume directory..."
-                    MKDIR = sh(returnStdout: true, script: "/usr/bin/python3 ${env.SCRIPT_DIR}/configure.py -d ${JOBDIR}").trim()
+                    MKDIR = sh(returnStdout: true, script: "/usr/bin/python3 ${env.SCRIPT_DIR}/configure.py -d ${env.JOBDIR}").trim()
                     echo "mkdir = ${MKDIR}"
                     if (MKDIR == 'true') {
-                        echo "repository branch volume directory ${JOBDIR} successfully created."
+                        echo "repository branch volume directory ${env.JOBDIR} successfully created."
                     } else {
-                        echo "repository branch volume directory ${JOBDIR} already exists."
+                        echo "repository branch volume directory ${env.JOBDIR} already exists."
                     }
-
-
-
-                    //DIR=sh(returnStdout: true, script: "echo ${env.GIT_URL} | cut -d'/' -f5 | cut -d'.' -f1").trim()
-                    //DIR=sh(returnStdout: true, script: "echo /volumes/${DIR}/${GIT_BRANCH}/").trim()
-                    echo "DIR = ${DIR}"
                 }
-
+            }
+        }
+        stage("Next") {
+            steps {
+                script {
+                    echo "volume directory = ${env.JOBDIR}"
+                }
             }
         }
     }
