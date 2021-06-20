@@ -8,6 +8,7 @@ pipeline {
         REPO_NAME=""
         MKDIR=""
         VALID_IMAGE='false'
+        BUILD_IMAGE='true'
         REUSE='false'
         JOB_DIR=""
         VOLUME_PATH=""
@@ -61,6 +62,26 @@ pipeline {
             steps {
                 script {
                     echo "Rebuilding docker image..."
+                    sh """
+                       docker build -t l2lcommit .
+                    """
+                }
+            }
+        }
+        stage("RunTests") {
+            steps {
+                script {
+                    echo "Running tests..."
+                    //sh """
+                    //   docker build -t l2lcommit .
+                    //"""
+                    BUILD_IMAGE = sh(returnStdout: true, script: "/usr/bin/python3 ${env.SCRIPT_DIR}/validate.py -d ${env.WORKSPACE}").trim()
+                    echo "build_image = ${BUILD_IMAGE}"
+                    if (BUILD_IMAGE == 'true') {
+                        echo "Docker image rebuild passed."
+                    } else {
+                        echo "Docker image rebuild failed.."
+                    }
                 }
             }
         }
