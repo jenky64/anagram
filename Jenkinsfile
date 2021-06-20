@@ -26,6 +26,7 @@ pipeline {
                    echo "checking for repository branch volume directory..."
                     DIR=sh(returnStdout: true, script: 'pwd')
                     MKDIR = sh(returnStdout: true, script: "/usr/bin/python3 ${env.SCRIPT_DIR}/configure.py -d ${DIR}").trim()
+                    echo "mkdir = ${MKDIR}"
                     if (MKDIR == 'true') {
                         echo "repository branch volume directory ${DIR} successfully created."
                     } else {
