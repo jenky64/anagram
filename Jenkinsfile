@@ -78,6 +78,7 @@ pipeline {
             steps {
                 script {
                     echo "running tests"
+                }
             }
         }
     }
