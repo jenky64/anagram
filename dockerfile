@@ -8,4 +8,4 @@ RUN chmod 777 /app && \
     conda config --add channels conda-forge && \
     conda install --file=testing-modules-list.txt
 
-ENTRYPOINT ["/bin/bash"]
+ENTRYPOINT ["/opt/conda/bin/python3"]
