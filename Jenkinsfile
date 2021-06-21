@@ -5,7 +5,6 @@ pipeline {
         BASE_DIR='/jenkins'
         SCRIPT_DIR="${env.BASE_DIR}/scripts"
         VOLUME_DIR='/volumes'
-        REPO_NAME=""
         MKDIR=""
         VALID_IMAGE='false'
         BUILD_IMAGE='true'
@@ -15,9 +14,8 @@ pipeline {
     }
 
     stages {
-        /* stage("Configure") {
+        stage("Configure") {
             steps {
-                sh 'ls -l'
                 script {
                     echo "git commit: ${env.GIT_COMMIT}"
                     echo "git branch: ${env.GIT_BRANCH}"
@@ -26,7 +24,6 @@ pipeline {
 
                     JOB_DIR = JOB_NAME.replace('/','_')
                     VOLUME_PATH = [VOLUME_DIR, JOB_DIR].join('/')
-                    echo "JOB_DIR = ${JOB_DIR}"
 
                     echo "checking for repository branch volume directory..."
                     MKDIR = sh(returnStdout: true, script: "/usr/bin/python3 ${env.SCRIPT_DIR}/configure.py -d ${env.WORKSPACE}").trim()
@@ -39,7 +36,7 @@ pipeline {
                 }
             }
         }
-        stage("DockerCheck") {
+        /* stage("DockerCheck") {
             steps {
                 script {
                     echo "validating docker image..."
@@ -52,7 +49,7 @@ pipeline {
                     }
                 }
             }
-        } */
+        }
         stage("DockerRebuild") {
             when {
                 expression {
@@ -80,6 +77,6 @@ pipeline {
                     echo "running tests"
                 }
             }
-        }
+        } */
     }
 }
