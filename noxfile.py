@@ -1,8 +1,7 @@
 import nox
-import pathlib
 
-results: list = []
-#@nox.session(python=["3.7","3.8"],venv_backend="conda")
+nox.options.envdir = '/backup'
+
 @nox.session(python=["3.7", "3.8"],venv_backend="conda")
 def tests(session):
     session.conda_install('--channel=conda-forge', '--file', 'testing-modules-list.txt')
