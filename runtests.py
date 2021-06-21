@@ -89,7 +89,7 @@ if __name__ == '__main__':
         logging.error(f'\nCANNOT RUN TESTS DUE TO ERROR!\n')
     else:
         ret = run(reuse_envs=reuse_envs)
-        post_run()
+        #post_run()
         if ret:
             sys.exit(0)
         else:
