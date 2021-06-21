@@ -2,9 +2,11 @@
 
 import os
 import logging
+import shutil
 import sys
 from filecmp import cmp
 from pathlib import Path
+
 
 reuse_envs = True
 fail = False
@@ -58,6 +60,7 @@ def run(reuse_envs: bool = True):
 def post_run():
     logging.info("performing post run activities")
 
+    '''
     check_files.append(('dockerfile.prev', 'dockerfile'))
     app_path = Path(app_dir)
     backup_path = Path(backup_dir)
@@ -66,9 +69,10 @@ def post_run():
         backup_file = Path('/'.join([backup_dir, files[0]]))
         cur_file = Path('/'.join([app_dir, files[1]]))
         cur_file.rename(backup_file)
-
-    for html_file in app_path.glob('*.html'):
-        Path(html_file).rename(backup_path/html_file)
+    '''
+    os.system('mv /app/*.html /backup')
+    #for html_file in app_path.glob('*.html'):
+    #    Path(html_file).rename(backup_path/html_file)
 
 
 if __name__ == '__main__':
