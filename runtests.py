@@ -2,15 +2,16 @@
 
 import os
 import logging
-import shutil
+import sys
 from filecmp import cmp
 from pathlib import Path
 
-
-reuse = True
+reuse_envs = True
 fail = False
 
 app_dir: str = '.'
+backup_dir: str = '/backup'
+
 check_files: list = [('noxfile.prev', 'noxfile.py'),
                      ('modules-list.prev', 'modules-list.txt'),
                      ('testing-modules-list.prev', 'testing-modules-list.txt')]
@@ -19,7 +20,7 @@ check_files: list = [('noxfile.prev', 'noxfile.py'),
 def check_and_compare_files():
     logging.info('checking and comparing files...\n')
     for files in check_files:
-        prev_file = Path('/'.join([app_dir, files[0]]))
+        prev_file = Path('/'.join([backup_dir, files[0]]))
         cur_file = Path('/'.join([app_dir, files[1]]))
         logging.info(f'checking for {cur_file}.')
         if cur_file.exists():
@@ -36,39 +37,40 @@ def check_and_compare_files():
             else:
                 logging.error(f'file comparison on {cur_file} and {prev_file} failed.')
                 logging.error(f'this may be due to {prev_file} missing or a change to {cur_file}. Cannot reuse environments.\n')
-                reuse = False
+                reuse_envs = False
         except OSError as error:
             logging.error(f'{error}')
-            reuse = False
+            reuse_envs = False
 
 
-def run(reuse: bool = True):
+def run(reuse_envs: bool = True):
     logging.info("running tests...")
     os.system('conda develop /app')
-    if reuse:
+    if reuse_envs:
         ret = os.system('nox -R -s tests')
     else:
         ret = os.system('nox -s tests')
 
     logging.info(f'ret = ${ret}')
-    #print(f'RET = {ret}')
     return ret
 
 
 def post_run():
-    pass
+    logging.info("performing post run activities")
 
-'''
-# make backup copies of module-list.txt and noxfile.py
-mv /app/modules-list.txt /app/modules-list.prev
-mv /app/testing-modules-list.txt /app/testing-modules-list.prev
-mv /app/noxfile.py /app/noxfile.prev
+    check_files.append(('dockerfile.prev', 'dockerfile'))
+    app_path = Path(app_dir)
+    backup_path = Path(backup_dir)
 
-# remove code directories
-rm -rf /app/tests /app/anagram /app/assets
+    for files in check_files:
+        backup_file = Path('/'.join([backup_dir, files[0]]))
+        cur_file = Path('/'.join([app_dir, files[1]]))
+        cur_file.rename(backup_file)
 
-tail -f /dev/null
-'''
+    for html_file in app_path.glob('*.html'):
+        Path(html_file).rename(backup_path/html_file)
+
+
 if __name__ == '__main__':
 
     logging.basicConfig(filename='runtests.log',
@@ -82,4 +84,9 @@ if __name__ == '__main__':
     if fail:
         logging.error(f'\nCANNOT RUN TESTS DUE TO ERROR!\n')
     else:
-        ret = run(reuse=reuse)
+        ret = run(reuse_envs=reuse_envs)
+        post_run()
+        if ret:
+            sys.exit(0)
+        else:
+            sys.exit(1)
