@@ -14,7 +14,7 @@ pipeline {
     }
 
     stages {
-        stage("Configure") {
+      /*  stage("Configure") {
             steps {
                 script {
                     echo "git commit: ${env.GIT_COMMIT}"
@@ -35,14 +35,14 @@ pipeline {
                     }
                 }
             }
-        }
-        /* stage("DockerCheck") {
+        } */
+         stage("ValidateDockerImage") {
             steps {
                 script {
                     echo "validating docker image..."
-                    VALID_IMAGE = sh(returnStdout: true, script: "/usr/bin/python3 ${env.SCRIPT_DIR}/validate.py -d ${env.WORKSPACE}").trim()
+                    VALID_IMAGE = sh(returnStatus: true, script: "/usr/bin/python3 ${env.SCRIPT_DIR}/docker/validate.py -d ${env.WORKSPACE}")
                     echo "valid_image = ${VALID_IMAGE}"
-                    if (VALID_IMAGE == 'true') {
+                    if (VALID_IMAGE == 0) {
                         echo "Docker image validation passed."
                     } else {
                         echo "Docker image validation failed. Rebuild required."
@@ -50,10 +50,10 @@ pipeline {
                 }
             }
         }
-        stage("DockerRebuild") {
+      /*  stage("DockerRebuild") {
             when {
                 expression {
-                    VALID_IMAGE == 'false'
+                    VALID_IMAGE == 1
                 }
             }
             steps {
