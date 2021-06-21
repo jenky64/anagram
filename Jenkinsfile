@@ -6,9 +6,8 @@ pipeline {
         SCRIPT_DIR="${env.BASE_DIR}/scripts"
         VOLUME_DIR='/volumes'
         MKDIR=""
-        VALID_IMAGE='false'
-        BUILD_IMAGE='true'
-        REUSE='false'
+        VALID_IMAGE=0
+        BUILD=0
         JOB_DIR=""
         VOLUME_PATH=""
     }
@@ -35,7 +34,7 @@ pipeline {
                     }
                 }
             }
-        } */
+        }
          stage("ValidateDockerImage") {
             steps {
                 script {
@@ -50,7 +49,7 @@ pipeline {
                 }
             }
         }
-      /*  stage("DockerRebuild") {
+        stage("DockerRebuild") {
             when {
                 expression {
                     VALID_IMAGE == 1
@@ -59,9 +58,7 @@ pipeline {
             steps {
                 script {
                     echo "Rebuilding docker image..."
-                    echo "Running tests..."
-                    echo "workspace = ${env.WORKSPACE}"
-                    BUILD_IMAGE = sh(returnStdout: true, script: "/usr/bin/python3 ${env.SCRIPT_DIR}/docker1.py -b -d ${env.WORKSPACE}").trim()
+                    BUILD = sh(returnStatus: true, script: "/usr/bin/python3 ${env.SCRIPT_DIR}/docker/build.py -d ${env.WORKSPACE} -t l2lcommit:latest")
                     echo "build_image = ${BUILD_IMAGE}"
                     if (BUILD_IMAGE == 'true') {
                         echo "Docker image rebuild passed."
@@ -70,13 +67,20 @@ pipeline {
                     }
                 }
             }
-        }
+        } */
         stage("RunTests") {
             steps {
                 script {
                     echo "running tests"
+                    RET = sh(returnStatus: true, script: "/usr/bin/python3 ${env.SCRIPT_DIR}/docker/run.py -d ${env.WORKSPACE} -i l2lcommit:latest")
+                    echo "ret = ${RET}"
+                    if (RET == 0) {
+                        echo "tests passed"
+                    } else {
+                        echo "tests failed"
+                    }
                 }
             }
-        } */
+        }
     }
 }
