@@ -74,7 +74,6 @@ if __name__ == '__main__':
     logging.basicConfig(filename='runtests.log',
                         format='%(asctime)s %(levelname)s:%(message)s',
                         datefmt='%m/%d/%Y %I:%M:%S %p',
-                        encoding='utf-8',
                         level=logging.DEBUG)
 
     logging.info(f'starting test runs\n')
