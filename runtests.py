@@ -50,7 +50,9 @@ def run(reuse: bool = True):
     else:
         ret = os.system('nox -s tests')
 
-    print(f'RET = {ret}')
+    logging.info(f'ret = ${ret}')
+    #print(f'RET = {ret}')
+    return ret
 
 
 def post_run():
@@ -81,4 +83,4 @@ if __name__ == '__main__':
     if fail:
         logging.error(f'\nCANNOT RUN TESTS DUE TO ERROR!\n')
     else:
-        run(reuse=reuse)
+        ret = run(reuse=reuse)
