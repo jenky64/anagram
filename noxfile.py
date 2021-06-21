@@ -1,6 +1,6 @@
 import nox
 
-nox.options.envdir = '/backup'
+#nox.options.envdir = '/backup'
 
 @nox.session(python=["3.7", "3.8"],venv_backend="conda")
 def tests(session):
