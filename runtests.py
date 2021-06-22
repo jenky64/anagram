@@ -70,7 +70,8 @@ def post_run():
         shutil.move(cur_file, backup_file)
 
     for f in glob.glob(r'/app/*.html'):
-        dest = '/'.join([backup_dir, f])
+        dest_file = f.split('/')[-1]
+        dest = '/'.join([backup_dir, dest_file])
         shutil.move(f, dest)
 
 
