@@ -53,7 +53,7 @@ def run(reuse_envs: bool = True):
     else:
         ret = os.system('nox -s tests')
 
-    logging.info(f'ret = ${ret}')
+    logging.info(f'ret = {ret}')
     return ret
 
 
