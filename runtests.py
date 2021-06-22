@@ -93,7 +93,7 @@ if __name__ == '__main__':
         # this is kinda messy. shell returns 0 on success,
         # but in python 0 is false. Since the Jenkinsfile code
         # considers 0 to be a successful run, python false (fail)
-        # needs to return shell success (0)
+        # needs to return shell success (0) and vice versa
         if ret:
             sys.exit(1)
         else:
