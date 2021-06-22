@@ -60,16 +60,12 @@ def run(reuse_envs: bool = True):
 def post_run():
     logging.info("performing post run activities")
 
-    '''
     check_files.append(('dockerfile.prev', 'dockerfile'))
-    app_path = Path(app_dir)
-    backup_path = Path(backup_dir)
 
     for files in check_files:
-        backup_file = Path('/'.join([backup_dir, files[0]]))
-        cur_file = Path('/'.join([app_dir, files[1]]))
-        cur_file.rename(backup_file)
-    '''
+        backup_file = '/'.join([backup_dir, files[0]])
+        cur_file = '/'.join([app_dir, files[1]])
+        shutil.move(cur_file, backup_file)
     os.system('mv /app/*.html /backup')
     #for html_file in app_path.glob('*.html'):
     #    Path(html_file).rename(backup_path/html_file)
@@ -89,7 +85,7 @@ if __name__ == '__main__':
         logging.error(f'\nCANNOT RUN TESTS DUE TO ERROR!\n')
     else:
         ret = run(reuse_envs=reuse_envs)
-        #post_run()
+        post_run()
         # this is kinda messy. shell returns 0 on success,
         # but in python 0 is false. Since the Jenkinsfile code
         # considers 0 to be a successful run, python false (fail)
