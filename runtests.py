@@ -1,7 +1,8 @@
 #!/bin/env python3
 
-import os
+import glob
 import logging
+import os
 import shutil
 import sys
 from filecmp import cmp
@@ -59,6 +60,7 @@ def run(reuse_envs: bool = True):
 
 def post_run():
     logging.info("performing post run activities")
+    logging.info("moving files to backup directory")
 
     check_files.append(('dockerfile.prev', 'dockerfile'))
 
@@ -66,9 +68,9 @@ def post_run():
         backup_file = '/'.join([backup_dir, files[0]])
         cur_file = '/'.join([app_dir, files[1]])
         shutil.move(cur_file, backup_file)
-    os.system('mv /app/*.html /backup')
-    #for html_file in app_path.glob('*.html'):
-    #    Path(html_file).rename(backup_path/html_file)
+
+    for f in glob.glob(r'/app/*.html'):
+        shutil.move(f, backup_dir)
 
 
 if __name__ == '__main__':
@@ -91,6 +93,8 @@ if __name__ == '__main__':
         # considers 0 to be a successful run, python false (fail)
         # needs to return shell success (0) and vice versa
         if ret:
+            logging.error("tests failed or other error")
             sys.exit(1)
         else:
+            logging.info("tests successful")
             sys.exit(0)
