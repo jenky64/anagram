@@ -13,29 +13,29 @@ pipeline {
     }
 
     stages {
-      /*  stage("Configure") {
+        stage("Configure") {
             steps {
                 script {
-                    echo "git commit: ${env.GIT_COMMIT}"
                     echo "git branch: ${env.GIT_BRANCH}"
                     echo "git url: ${env.GIT_URL}"
+                    echo "git commit: ${env.GIT_COMMIT}"
                     echo "git previous commit: ${env.GIT_PREVIOUS_COMMIT}"
 
-                    JOB_DIR = JOB_NAME.replace('/','_')
-                    VOLUME_PATH = [VOLUME_DIR, JOB_DIR].join('/')
+                    //JOB_DIR = JOB_NAME.replace('/','_')
+                    //VOLUME_PATH = [VOLUME_DIR, JOB_DIR].join('/')
 
-                    echo "checking for repository branch volume directory..."
+                  /*  echo "checking for repository branch volume directory..."
                     MKDIR = sh(returnStdout: true, script: "/usr/bin/python3 ${env.SCRIPT_DIR}/configure.py -d ${env.WORKSPACE}").trim()
                     echo "mkdir = ${MKDIR}"
                     if (MKDIR == 'true') {
                         echo "repository branch volume directory ${JOB_DIR} successfully created."
                     } else {
                         echo "repository branch volume directory ${JOB_DIR} already exists."
-                    }
+                    } */
                 }
             }
         }
-         stage("ValidateDockerImage") {
+        /* stage("ValidateDockerImage") {
             steps {
                 script {
                     echo "validating docker image..."
