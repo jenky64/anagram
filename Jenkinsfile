@@ -91,7 +91,7 @@ pipeline {
             steps {
                 script {
                     echo "reverting latest commit due to test failure..."
-                    COMMIT_STATUS = sh(returnStatus: true, script: "git revert ${env.GIT_COMMIT}").trim()
+                    COMMIT_STATUS = sh(returnStatus: true, script: "git revert ${env.GIT_COMMIT}")
                     echo "commit_status = ${COMMIT_STATUS}"
                     /* if (BUILD_IMAGE == 'true') {
                         echo "Docker image rebuild passed."
