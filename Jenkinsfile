@@ -94,8 +94,9 @@ pipeline {
                     COMMIT_STATUS = sh(returnStatus: true, script: "git revert ${env.GIT_COMMIT}")
                     echo "commit_status = ${COMMIT_STATUS}"
                     if (COMMIT_STATUS == 0) {
-                        PUSH_STATUS = sh(returnStatus: true, script: "git push origin dev")
-                        echo "push status = ${PUSH_STATUS}"
+                        //PUSH_STATUS = sh(returnStatus: true, script: "git push origin dev")
+                        //echo "push status = ${PUSH_STATUS}"
+                        sh 'git push origin dev'
                     }
                     /* if (BUILD_IMAGE == 'true') {
                         echo "Docker image rebuild passed."
