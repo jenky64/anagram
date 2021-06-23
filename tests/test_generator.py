@@ -58,8 +58,8 @@ def test_generate_anagrams_one():
     generator.set_word('stop')
     generator.generate_anagrams()
 
-#    expected = {2: ['op', 'os', 'po', 'so', 'st', 'to'],
-    expected = {2: ['ap', 'os', 'po', 'so', 'st', 'to'],
+    expected = {2: ['op', 'os', 'po', 'so', 'st', 'to'],
+#    expected = {2: ['ap', 'os', 'po', 'so', 'st', 'to'],
                 3: ['ops', 'opt', 'pos', 'pot', 'pst', 'sop', 'sot', 'top'],
                 4: ['opts', 'post', 'pots', 'spot', 'stop', 'tops']}
 
