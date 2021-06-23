@@ -35,7 +35,7 @@ pipeline {
                 }
             }
         }
-        /* stage("ValidateDockerImage") {
+        stage("ValidateDockerImage") {
             steps {
                 script {
                     echo "validating docker image..."
@@ -67,7 +67,7 @@ pipeline {
                     }
                 }
             }
-        } */
+        }
         stage("RunTests") {
             steps {
                 script {
@@ -79,6 +79,25 @@ pipeline {
                     } else {
                         echo "tests failed"
                     }
+                }
+            }
+        }
+        stage("CommitRevert") {
+            when {
+                expression {
+                    RET != 0
+                }
+            }
+            steps {
+                script {
+                    echo "reverting latest commit due to test failure..."
+                    COMMIT_STATUS = sh(returnStatus: true, script: "git revert ${env.GIT_COMMIT}").trim()
+                    echo "commit_status = ${COMMIT_STATUS}"
+                    /* if (BUILD_IMAGE == 'true') {
+                        echo "Docker image rebuild passed."
+                    } else {
+                        echo "Docker image rebuild failed.."
+                    } */
                 }
             }
         }
