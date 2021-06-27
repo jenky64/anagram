@@ -97,7 +97,7 @@ pipeline {
                     //COMMIT_STATUS = sh(returnStatus: true, script: "git commit -m 'commit ${env.GIT_COMMIT} reverted'")
                     echo "REVERT_status = ${REVERT_STATUS}"
                     if (REVERT_STATUS == 0) {
-                        sh 'git push origin dev'
+                        sh 'git push dev'
                     }
                 }
             }
