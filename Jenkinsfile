@@ -24,14 +24,14 @@ pipeline {
                     //JOB_DIR = JOB_NAME.replace('/','_')
                     //VOLUME_PATH = [VOLUME_DIR, JOB_DIR].join('/')
 
-                  /*  echo "checking for repository branch volume directory..."
+                    echo "checking for repository branch volume directory..."
                     MKDIR = sh(returnStdout: true, script: "/usr/bin/python3 ${env.SCRIPT_DIR}/configure.py -d ${env.WORKSPACE}").trim()
                     echo "mkdir = ${MKDIR}"
                     if (MKDIR == 'true') {
                         echo "repository branch volume directory ${JOB_DIR} successfully created."
                     } else {
                         echo "repository branch volume directory ${JOB_DIR} already exists."
-                    } */
+                    }
                 }
             }
         }
@@ -76,8 +76,14 @@ pipeline {
                     echo "ret = ${RET}"
                     if (RET == 0) {
                         echo "tests passed"
+                        SAVE_COMMIT = sh(returnStatus: true, script: "/usr/bin/python3 ${env.SCRIPT_DIR}/save_commit.py -c ${env.GIT_COMMIT} -d ${env.WORKSPACE}")
+                        if (SAVE_COMMIT == 0) {
+                            echo "commit save successful"
+                        } else {
+                            echo "commit save failed"
+                        }
                     } else {
-                        echo "tests failed"
+                        echo "tests failed. need to revert commit"
                     }
                 }
             }
@@ -91,13 +97,14 @@ pipeline {
             steps {
                 script {
                     echo "reverting latest commit due to test failure..."
-                    //REVERT_STATUS = sh(returnStatus: true, script: "git revert ${env.GIT_COMMIT} --no-edit")
-                    REVERT_STATUS = sh(returnStatus: true, script: "git revert HEAD --no-edit")
-                    //COMMIT_STATUS = sh(returnStatus: true, script: "git add .")
-                    //COMMIT_STATUS = sh(returnStatus: true, script: "git commit -m 'commit ${env.GIT_COMMIT} reverted'")
+                    COMMIT = sh(returnStdout: true, script: "/usr/bin/python3 ${env.SCRIPT_DIR}/git/read_commit.py -d ${env.WORKSPACE}").trim()
+                    REVERT_STATUS = sh(returnStatus: true, script: "git revert ${COMMIT} --no-edit")
                     echo "REVERT_status = ${REVERT_STATUS}"
-                    if (REVERT_STATUS == 0) {
-                        sh 'git push dev'
+                    CHECKOUT_STATUS = sh(returnStatus: true, script: "git branch -b ${env.GIT_BRANCH}")
+                    echo "CHECKOUT_status = ${CHECKOUT_STATUS}"
+                    //if (REVERT_STATUS == 0 && CHECKOUT_STATUS == 0) {
+                    if (REVERT_STATUS == 0 && CHECKOUT_STATUS == 0) {
+                        sh 'git push ${env.GIT_BRANCH}'
                     }
                 }
             }
