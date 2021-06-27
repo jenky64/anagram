@@ -4,12 +4,7 @@ pipeline {
     environment {
         BASE_DIR='/jenkins'
         SCRIPT_DIR="${env.BASE_DIR}/scripts"
-        VOLUME_DIR='/volumes'
-        MKDIR=""
         VALID_IMAGE=0
-        BUILD=0
-        JOB_DIR=""
-        VOLUME_PATH=""
     }
 
     stages {
@@ -22,11 +17,9 @@ pipeline {
                     echo "git previous commit: ${env.GIT_PREVIOUS_COMMIT}"
 
                     JOB_DIR = JOB_NAME.replace('/','_')
-                    //VOLUME_PATH = [VOLUME_DIR, JOB_DIR].join('/')
 
                     echo "checking for repository branch volume directory..."
                     MKDIR = sh(returnStdout: true, script: "/usr/bin/python3 ${env.SCRIPT_DIR}/configure.py -d ${env.WORKSPACE}").trim()
-                    echo "mkdir = ${MKDIR}"
                     if (MKDIR == 'true') {
                         echo "repository branch volume directory ${JOB_DIR} successfully created."
                     } else {
@@ -40,7 +33,7 @@ pipeline {
                 script {
                     echo "validating docker image..."
                     VALID_IMAGE = sh(returnStatus: true, script: "/usr/bin/python3 ${env.SCRIPT_DIR}/docker/validate.py -d ${env.WORKSPACE}")
-                    echo "valid_image = ${VALID_IMAGE}"
+                    //echo "valid_image = ${VALID_IMAGE}"
                     if (VALID_IMAGE == 0) {
                         echo "Docker image validation passed."
                     } else {
@@ -75,15 +68,15 @@ pipeline {
                     RET = sh(returnStatus: true, script: "/usr/bin/python3 ${env.SCRIPT_DIR}/docker/run.py -d ${env.WORKSPACE} -i l2lcommit:latest")
                     echo "ret = ${RET}"
                     if (RET == 0) {
-                        echo "tests passed"
+                        echo "tests passed. saving commit tag."
                         SAVE_COMMIT = sh(returnStatus: true, script: "/usr/bin/python3 ${env.SCRIPT_DIR}/git/save_commit.py -c ${env.GIT_COMMIT} -d ${env.WORKSPACE}")
                         if (SAVE_COMMIT == 0) {
-                            echo "commit save successful"
+                            echo "commit tag save successful"
                         } else {
-                            echo "commit save failed"
+                            echo "commit tag save failed"
                         }
                     } else {
-                        echo "tests failed. need to revert commit"
+                        echo "tests failed. commit tag not saved. need to revert commit"
                     }
                 }
             }
@@ -96,15 +89,23 @@ pipeline {
             }
             steps {
                 script {
-                    echo "reverting latest commit due to test failure..."
+                    echo "reverting commit due to test failure..."
                     COMMIT = sh(returnStdout: true, script: "/usr/bin/python3 ${env.SCRIPT_DIR}/git/read_commit.py -d ${env.WORKSPACE}").trim()
+                    if (COMMIT == 'false') {
+                        echo "unable to read commit file. cannot revert commit. must be managed manually."
+                    }
                     REVERT_STATUS = sh(returnStatus: true, script: "git revert ${COMMIT} --no-edit")
                     echo "REVERT_status = ${REVERT_STATUS}"
                     CHECKOUT_STATUS = sh(returnStatus: true, script: "git branch -b ${env.GIT_BRANCH}")
                     echo "CHECKOUT_status = ${CHECKOUT_STATUS}"
                     //if (REVERT_STATUS == 0 && CHECKOUT_STATUS == 0) {
                     if (REVERT_STATUS == 0 && CHECKOUT_STATUS == 0) {
-                        sh 'git push ${env.GIT_BRANCH}'
+                        GIT_PUSH = sh(returnStatus: true, script: "git push ${env.GIT_BRANCH}")
+                        if (GIT_PUSH == 0) {
+                            echo "git revert successful. previous state will be validated in next run."
+                        } else {
+                            echo "git revert failed on git push to branch. must be managed manually"
+                        }
                     }
                 }
             }
