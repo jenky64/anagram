@@ -96,7 +96,7 @@ pipeline {
                     }
                     REVERT_STATUS = sh(returnStatus: true, script: "git revert ${COMMIT} --no-edit")
                     echo "REVERT_status = ${REVERT_STATUS}"
-                    CHECKOUT_STATUS = sh(returnStatus: true, script: "git checkout -b ${env.GIT_BRANCH}")
+                    CHECKOUT_STATUS = sh(returnStatus: true, script: "git branch -b ${env.GIT_BRANCH}")
                     echo "CHECKOUT_status = ${CHECKOUT_STATUS}"
                     //if (REVERT_STATUS == 0 && CHECKOUT_STATUS == 0) {
                     if (REVERT_STATUS == 0 && CHECKOUT_STATUS == 0) {
