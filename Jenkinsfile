@@ -95,7 +95,7 @@ pipeline {
                         echo "unable to read commit file. cannot revert commit. must be managed manually."
                     }
                     REVERT_STATUS = sh(returnStatus: true, script: "git revert ${COMMIT} --no-edit")
-                    COMMIT_STATUS = sh(returnStatus: true, script: "git commit -am "reverting to clean state")
+                    COMMIT_STATUS = sh(returnStatus: true, script: "git commit -am 'reverting to clean state'")
                     echo "COMMIT_STATUS = ${COMMIT_STATUS}"
                     CHECKOUT_STATUS = sh(returnStatus: true, script: "git checkout -b ${env.GIT_BRANCH}")
                     echo "CHECKOUT_status = ${CHECKOUT_STATUS}"
