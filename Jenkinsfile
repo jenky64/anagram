@@ -95,11 +95,12 @@ pipeline {
                         echo "unable to read commit file. cannot revert commit. must be managed manually."
                     }
                     REVERT_STATUS = sh(returnStatus: true, script: "git revert ${COMMIT} --no-edit")
-                    echo "REVERT_status = ${REVERT_STATUS}"
+                    COMMIT_STATUS = sh(returnStatus: true, script: "git commit -am "reverting to clean state")
+                    echo "COMMIT_STATUS = ${COMMIT_STATUS}"
                     CHECKOUT_STATUS = sh(returnStatus: true, script: "git checkout -b ${env.GIT_BRANCH}")
                     echo "CHECKOUT_status = ${CHECKOUT_STATUS}"
                     //if (REVERT_STATUS == 0 && CHECKOUT_STATUS == 0) {
-                    if (REVERT_STATUS == 0 && CHECKOUT_STATUS == 0) {
+                    if (COMMIT_STATUS == 0 && CHECKOUT_STATUS == 0) {
                         GIT_PUSH = sh(returnStatus: true, script: "git push origin ${env.GIT_BRANCH}")
                         if (GIT_PUSH == 0) {
                             echo "git revert successful. previous state will be validated in next run."
