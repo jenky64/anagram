@@ -91,9 +91,10 @@ pipeline {
             steps {
                 script {
                     echo "reverting latest commit due to test failure..."
-                    REVERT_STATUS = sh(returnStatus: true, script: "git revert ${env.GIT_COMMIT} --no-edit")
-                    COMMIT_STATUS = sh(returnStatus: true, script: "git add .")
-                    COMMIT_STATUS = sh(returnStatus: true, script: "git commit -m 'commit ${env.GIT_COMMIT} reverted'")
+                    //REVERT_STATUS = sh(returnStatus: true, script: "git revert ${env.GIT_COMMIT} --no-edit")
+                    REVERT_STATUS = sh(returnStatus: true, script: "git revert HEAD --no-edit")
+                    //COMMIT_STATUS = sh(returnStatus: true, script: "git add .")
+                    //COMMIT_STATUS = sh(returnStatus: true, script: "git commit -m 'commit ${env.GIT_COMMIT} reverted'")
                     echo "commit_status = ${COMMIT_STATUS}"
                     if (REVERT_STATUS == 0) {
                         sh 'git push origin dev'
