@@ -103,10 +103,10 @@ pipeline {
                         GIT_PUSH = sh(returnStatus: true, script: "git push origin ${env.GIT_BRANCH}")
                         if (GIT_PUSH == 0) {
                             echo "git revert successful. previous state will be validated in next run."
+                            GIT_DELETE = sh(returnStatus: true, script: "git branch -d ${env.GIT_BRANCH}")
                         } else {
                             echo "git revert failed on git push to branch. must be managed manually"
                         }
-                        GIT_DELETE = sh(returnStatus: true, script: "git branch -d ${env.GIT_BRANCH}")
                     }
                 }
             }
