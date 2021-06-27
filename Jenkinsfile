@@ -106,6 +106,7 @@ pipeline {
                         } else {
                             echo "git revert failed on git push to branch. must be managed manually"
                         }
+                        GIT_DELETE = sh(returnStatus: true, script: "git branch -d ${env.GIT_BRANCH}")
                     }
                 }
             }
