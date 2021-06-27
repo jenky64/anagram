@@ -76,7 +76,7 @@ pipeline {
                     echo "ret = ${RET}"
                     if (RET == 0) {
                         echo "tests passed"
-                        SAVE_COMMIT = sh(returnStatus: true, script: "/usr/bin/python3 ${env.SCRIPT_DIR}/save_commit.py -c ${env.GIT_COMMIT} -d ${env.WORKSPACE}")
+                        SAVE_COMMIT = sh(returnStatus: true, script: "/usr/bin/python3 ${env.SCRIPT_DIR}/git/save_commit.py -c ${env.GIT_COMMIT} -d ${env.WORKSPACE}")
                         if (SAVE_COMMIT == 0) {
                             echo "commit save successful"
                         } else {
