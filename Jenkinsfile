@@ -21,7 +21,7 @@ pipeline {
                     echo "git commit: ${env.GIT_COMMIT}"
                     echo "git previous commit: ${env.GIT_PREVIOUS_COMMIT}"
 
-                    //JOB_DIR = JOB_NAME.replace('/','_')
+                    JOB_DIR = JOB_NAME.replace('/','_')
                     //VOLUME_PATH = [VOLUME_DIR, JOB_DIR].join('/')
 
                     echo "checking for repository branch volume directory..."
