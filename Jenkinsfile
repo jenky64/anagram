@@ -91,18 +91,12 @@ pipeline {
             steps {
                 script {
                     echo "reverting latest commit due to test failure..."
-                    COMMIT_STATUS = sh(returnStatus: true, script: "git revert ${env.GIT_COMMIT}")
+                    REVERT_STATUS = sh(returnStatus: true, script: "git revert ${env.GIT_COMMIT}")
+                    COMMIT_STATUS = sh(returnStatus: true, script: "git commit -m 'commit reverted'")
                     echo "commit_status = ${COMMIT_STATUS}"
                     if (COMMIT_STATUS == 0) {
-                        //PUSH_STATUS = sh(returnStatus: true, script: "git push origin dev")
-                        //echo "push status = ${PUSH_STATUS}"
                         sh 'git push origin dev'
                     }
-                    /* if (BUILD_IMAGE == 'true') {
-                        echo "Docker image rebuild passed."
-                    } else {
-                        echo "Docker image rebuild failed.."
-                    } */
                 }
             }
         }
