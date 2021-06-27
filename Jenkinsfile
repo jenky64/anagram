@@ -100,7 +100,7 @@ pipeline {
                     echo "CHECKOUT_status = ${CHECKOUT_STATUS}"
                     //if (REVERT_STATUS == 0 && CHECKOUT_STATUS == 0) {
                     if (REVERT_STATUS == 0 && CHECKOUT_STATUS == 0) {
-                        GIT_PUSH = sh(returnStatus: true, script: "git push ${env.GIT_BRANCH}")
+                        GIT_PUSH = sh(returnStatus: true, script: "git push origin ${env.GIT_BRANCH}")
                         if (GIT_PUSH == 0) {
                             echo "git revert successful. previous state will be validated in next run."
                         } else {
