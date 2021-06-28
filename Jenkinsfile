@@ -99,11 +99,11 @@ pipeline {
                     }
                     //REVERT_STATUS = sh(returnStatus: true, script: "git revert ${COMMIT} --no-edit")
                     REVERT_STATUS = sh(returnStatus: true, script: "git revert ${COMMIT}")
-                    COMMIT_STATUS = sh(returnStatus: true, script: "git commit -am 'reverting to clean state'")
+                    #COMMIT_STATUS = sh(returnStatus: true, script: "git commit -am 'reverting to clean state'")
                     //COMMIT_STATUS = 0
                     CHECKOUT_STATUS = sh(returnStatus: true, script: "git checkout -b ${env.GIT_BRANCH}")
                     echo "REVERT_STATUS = ${REVERT_STATUS}"
-                    echo "COMMIT_STATUS = ${COMMIT_STATUS}"
+                    #echo "COMMIT_STATUS = ${COMMIT_STATUS}"
                     echo "CHECKOUT_status = ${CHECKOUT_STATUS}"
                     //if (REVERT_STATUS == 0 && CHECKOUT_STATUS == 0) {
                   /*  if (COMMIT_STATUS == 0 && CHECKOUT_STATUS == 0) {
@@ -124,7 +124,7 @@ pipeline {
             }
             when {
                 expression {
-                    COMMIT_STATUS == 0 && CHECKOUT_STATUS == 0
+                    CHECKOUT_STATUS == 0
                 }
             }
             steps {
