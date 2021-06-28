@@ -5,9 +5,12 @@ pipeline {
         BASE_DIR='/jenkins'
         SCRIPT_DIR="${env.BASE_DIR}/scripts"
         VALID_IMAGE=0
+<<<<<<< HEAD
         COMMIT_STATUS=1
         CHECKOUT_STATUS=1
         REVERT_STATUS=1
+=======
+>>>>>>> parent of b29ec13... more
     }
 
     stages {
