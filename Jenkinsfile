@@ -119,14 +119,25 @@ pipeline {
             }
         }
        stage("PushAfterRevert") {
+            environment {
+                GIT_AUTH = credentials('cfa38db9-060f-4a7e-92c2-963b692a8ead')
+            }
             when {
                 expression {
                     COMMIT_STATUS == 0 && CHECKOUT_STATUS == 0
                 }
             }
+            environment {
+                GIT_AUTH = credentials('cfa38db9-060f-4a7e-92c2-963b692a8ead')
+            }
             steps {
                 script {
                     echo "testing push after revert"
+                    sh('''
+                    git config --local credential.helper "!f() { echo username=\\$GIT_AUTH_USR; echo password=\\$GIT_AUTH_PSW; }; f"
+                    git push origin ${env.GIT_BRANCH}
+                    ''')
+
                     //GIT_DELETE = sh(returnStatus: true, script: "git branch -d ${env.GIT_BRANCH}")
                     //echo "git delete = ${GIT_DELETE}"
                 }
