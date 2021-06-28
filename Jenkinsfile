@@ -131,7 +131,7 @@ pipeline {
                 script {
                     echo "testing push after revert"
                     echo "branch = ${env.GIT_BRANCH}"
-                    echo "user = ${GIT_AUTH_USR}""
+                    echo "user = ${GIT_AUTH_USR}"
                     echo "password = ${GIT_AUTH_PSW}"
                     sh('''
                     git config --local credential.helper "!f() { echo username=\\$GIT_AUTH_USR; echo password=\\$GIT_AUTH_PSW; }; f"
