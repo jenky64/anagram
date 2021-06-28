@@ -142,6 +142,7 @@ pipeline {
 
                     //GIT_DELETE = sh(returnStatus: true, script: "git branch -d ${env.GIT_BRANCH}")
                     //echo "git delete = ${GIT_DELETE}"
+                    //second edit after all up to date
                 }
             }
         }
