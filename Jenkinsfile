@@ -131,6 +131,7 @@ pipeline {
            steps {
                script {
                    echo "this is the notify stage"
+                   echo "benign test"
                }
            }
        }
