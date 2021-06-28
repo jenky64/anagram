@@ -128,8 +128,8 @@ pipeline {
             steps {
                 script {
                     echo "testing push after revert"
-                    GIT_DELETE = sh(returnStatus: true, script: "git branch -d ${env.GIT_BRANCH}")
-                    echo "git delete = ${GIT_DELETE}"
+                    //GIT_DELETE = sh(returnStatus: true, script: "git branch -d ${env.GIT_BRANCH}")
+                    //echo "git delete = ${GIT_DELETE}"
                 }
             }
         }
