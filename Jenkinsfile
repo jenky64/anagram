@@ -66,7 +66,7 @@ pipeline {
                 script {
                     echo "running tests"
                     RUN_STATUS = sh(returnStatus: true, script: "/usr/bin/python3 ${env.SCRIPT_DIR}/docker/run.py -d ${env.WORKSPACE} -i l2lcommit:latest")
-                    echo "ret = ${RET}"
+                    echo "RUN_STATUS = ${RUN_STATUS}"
                     if (RUN_STATUS == 0) {
                         echo "tests passed successfully. saving commit tag ${env.GIT_COMMIT}."
                         SAVE_COMMIT = sh(returnStatus: true, script: "/usr/bin/python3 ${env.SCRIPT_DIR}/git/save_commit.py -c ${env.GIT_COMMIT} -d ${env.WORKSPACE}")
