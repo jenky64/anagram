@@ -67,7 +67,7 @@ def post_run():
     for files in check_files:
         backup_file = '/'.join([backup_dir, files[0]])
         cur_file = '/'.join([app_dir, files[1]])
-        shutil.move(cur_file, backup_file)
+        shutil.copy(cur_file, backup_file)
 
     for f in glob.glob(r'/app/*.html'):
         dest_file = f.split('/')[-1]
@@ -89,7 +89,7 @@ if __name__ == '__main__':
         logging.error(f'\nCANNOT RUN TESTS DUE TO ERROR!\n')
     else:
         ret = run(reuse_envs=reuse_envs)
-        #post_run()
+        post_run()
         # this is kinda messy. shell returns 0 on success,
         # but in python 0 is false. Since the Jenkinsfile code
         # considers 0 to be a successful run, python false (fail)

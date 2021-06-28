@@ -127,13 +127,23 @@ pipeline {
                     git config --local credential.helper "!f() { echo username=\\$GIT_AUTH_USR; echo password=\\$GIT_AUTH_PSW; }; f"
                     ''')
                     GIT_PUSH = sh(returnStatus: true, script: "git push origin ${env.GIT_BRANCH}")
-                    BRANCH_DELETE = sh(returnStatus: true, script: "git branch -d ${env.GIT_BRANCH}")
-
-                    //GIT_DELETE = sh(returnStatus: true, script: "git branch -d ${env.GIT_BRANCH}")
-                    //echo "git delete = ${GIT_DELETE}"
-                    //second edit after all up to date
                 }
             }
-        }
+       }
+       stage("CleanUp") {
+           steps {
+               script {
+                   echo "this is the cleanup stage"
+               }
+           }
+       }
+       stage("Notify") {
+           steps {
+               script {
+                   echo "this is the notify stage"
+               }
+           }
+       }
+
     }
 }
