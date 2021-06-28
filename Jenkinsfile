@@ -96,11 +96,12 @@ pipeline {
                     }
                     REVERT_STATUS = sh(returnStatus: true, script: "git revert ${COMMIT} --no-edit")
                     COMMIT_STATUS = sh(returnStatus: true, script: "git commit -am 'reverting to clean state'")
-                    echo "COMMIT_STATUS = ${COMMIT_STATUS}"
                     CHECKOUT_STATUS = sh(returnStatus: true, script: "git checkout -b ${env.GIT_BRANCH}")
+                    echo "REVERT_STATUS = ${REVERT_STATUS}"
+                    echo "COMMIT_STATUS = ${COMMIT_STATUS}"
                     echo "CHECKOUT_status = ${CHECKOUT_STATUS}"
                     //if (REVERT_STATUS == 0 && CHECKOUT_STATUS == 0) {
-                    if (COMMIT_STATUS == 0 && CHECKOUT_STATUS == 0) {
+                  /*  if (COMMIT_STATUS == 0 && CHECKOUT_STATUS == 0) {
                         GIT_PUSH = sh(returnStatus: true, script: "git push origin ${env.GIT_BRANCH}")
                         if (GIT_PUSH == 0) {
                             echo "git revert successful. previous state will be validated in next run."
@@ -108,8 +109,20 @@ pipeline {
                         } else {
                             echo "git revert failed on git push to branch. must be managed manually"
                         }
-                    }
+                    } */
                 }
+            }
+        }
+       stage("PushAfterRevert") {
+            when {
+                expression {
+                    COMMIT_STATUS == 0 && CHECKOUT_STATUS == 0
+                }
+            }
+            steps {
+                echo "testing push after revert"
+                GIT_DELETE = sh(returnStatus: true, script: "git branch -d ${env.GIT_BRANCH}")
+                echo "git delete = ${GIT_DELETE}"
             }
         }
     }
