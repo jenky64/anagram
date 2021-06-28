@@ -7,6 +7,7 @@ pipeline {
         VALID_IMAGE=0
         COMMIT_STATUS=1
         CHECKOUT_STATUS=1
+        REVERT_STATUS=1
     }
 
     stages {
