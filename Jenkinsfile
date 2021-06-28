@@ -96,6 +96,8 @@ pipeline {
                     COMMIT = sh(returnStdout: true, script: "/usr/bin/python3 ${env.SCRIPT_DIR}/git/read_commit.py -d ${env.WORKSPACE}").trim()
                     if (COMMIT == 'false') {
                         echo "unable to read commit file. cannot revert commit. must be managed manually."
+                    } else {
+                       echo "commit = ${COMMIT}"
                     }
                     //REVERT_STATUS = sh(returnStatus: true, script: "git revert ${COMMIT} --no-edit")
                     REVERT_STATUS = sh(returnStatus: true, script: "git revert ${COMMIT}")
