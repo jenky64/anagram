@@ -137,7 +137,7 @@ pipeline {
                     echo "password = ${GIT_AUTH_PSW}"
                     sh('''
                     git config --local credential.helper "!f() { echo username=\\$GIT_AUTH_USR; echo password=\\$GIT_AUTH_PSW; }; f"
-                    git push origin ${env.GIT_BRANCH}
+                    git push origin HEAD:${env.GIT_BRANCH}
                     ''')
 
                     //GIT_DELETE = sh(returnStatus: true, script: "git branch -d ${env.GIT_BRANCH}")
