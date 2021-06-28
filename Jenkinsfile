@@ -120,9 +120,11 @@ pipeline {
                 }
             }
             steps {
-                echo "testing push after revert"
-                GIT_DELETE = sh(returnStatus: true, script: "git branch -d ${env.GIT_BRANCH}")
-                echo "git delete = ${GIT_DELETE}"
+                script {
+                    echo "testing push after revert"
+                    GIT_DELETE = sh(returnStatus: true, script: "git branch -d ${env.GIT_BRANCH}")
+                    echo "git delete = ${GIT_DELETE}"
+                }
             }
         }
     }
