@@ -93,6 +93,11 @@ pipeline {
             steps {
                 script {
                     echo "reverting commit due to test failure..."
+                    REVERT_STATUS = sh(returnStatus: true, script: "/usr/bin/python3 ${env.SCRIPT_DIR}/git/revert_commit.py -b ${env.GIT_BRANCH} -d ${env.WORKSPACE}")
+                    echo "REVERT_STATUS = ${REVERT_STATUS}"
+                }
+             /*   script {
+                    echo "reverting commit due to test failure..."
                     COMMIT = sh(returnStdout: true, script: "/usr/bin/python3 ${env.SCRIPT_DIR}/git/read_commit.py -d ${env.WORKSPACE}").trim()
                     if (COMMIT == 'false') {
                         echo "unable to read commit file. cannot revert commit. must be managed manually."
@@ -105,7 +110,7 @@ pipeline {
                     echo "REVERT_STATUS = ${REVERT_STATUS}"
                     echo "COMMIT_STATUS = ${COMMIT_STATUS}"
                     echo "CHECKOUT_status = ${CHECKOUT_STATUS}"
-                }
+                } */
             }
         }
        stage("PushAfterRevert") {
@@ -114,11 +119,20 @@ pipeline {
             }
             when {
                 expression {
-                    CHECKOUT_STATUS == 0
+                    REVERT_STATUS == 0
                 }
             }
             steps {
                 script {
+                    echo "testing push after revert"
+                    echo "branch = ${env.GIT_BRANCH}"
+                    sh('''
+                    git config --local credential.helper "!f() { echo username=\\$GIT_AUTH_USR; echo password=\\$GIT_AUTH_PSW; }; f"
+                    ''')
+                    GIT_STATUS = sh(returnStatus: true, script: "/usr/bin/python3 ${env.SCRIPT_DIR}/git/git_push.py -b ${env.GIT_BRANCH}")
+                    echo "GIT_STATUS = ${GIT_STATUS}"
+                }
+             /*   script {
                     echo "testing push after revert"
                     echo "branch = ${env.GIT_BRANCH}"
                     echo "user = ${GIT_AUTH_USR}"
@@ -127,7 +141,7 @@ pipeline {
                     git config --local credential.helper "!f() { echo username=\\$GIT_AUTH_USR; echo password=\\$GIT_AUTH_PSW; }; f"
                     ''')
                     GIT_PUSH = sh(returnStatus: true, script: "git push origin ${env.GIT_BRANCH}")
-                }
+                } */
             }
        }
        stage("CleanUp") {
