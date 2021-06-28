@@ -105,18 +105,7 @@ pipeline {
                     //COMMIT_STATUS = 0
                     CHECKOUT_STATUS = sh(returnStatus: true, script: "git checkout -B ${env.GIT_BRANCH}")
                     echo "REVERT_STATUS = ${REVERT_STATUS}"
-                    //echo "COMMIT_STATUS = ${COMMIT_STATUS}"
                     echo "CHECKOUT_status = ${CHECKOUT_STATUS}"
-                    //if (REVERT_STATUS == 0 && CHECKOUT_STATUS == 0) {
-                  /*  if (COMMIT_STATUS == 0 && CHECKOUT_STATUS == 0) {
-                        GIT_PUSH = sh(returnStatus: true, script: "git push origin ${env.GIT_BRANCH}")
-                        if (GIT_PUSH == 0) {
-                            echo "git revert successful. previous state will be validated in next run."
-                            GIT_DELETE = sh(returnStatus: true, script: "git branch -d ${env.GIT_BRANCH}")
-                        } else {
-                            echo "git revert failed on git push to branch. must be managed manually"
-                        }
-                    } */
                 }
             }
         }
@@ -139,9 +128,6 @@ pipeline {
                     git config --local credential.helper "!f() { echo username=\\$GIT_AUTH_USR; echo password=\\$GIT_AUTH_PSW; }; f"
                     git push origin HEAD:dev
                     ''')
-
-                    //GIT_DELETE = sh(returnStatus: true, script: "git branch -d ${env.GIT_BRANCH}")
-                    //echo "git delete = ${GIT_DELETE}"
                 }
             }
         }
