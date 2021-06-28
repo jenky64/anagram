@@ -127,6 +127,9 @@ pipeline {
                     CHECKOUT_STATUS == 0
                 }
             }
+            environment {
+                GIT_AUTH = credentials('cfa38db9-060f-4a7e-92c2-963b692a8ead')
+            }
             steps {
                 script {
                     echo "testing push after revert"
