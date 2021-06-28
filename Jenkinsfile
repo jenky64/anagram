@@ -103,7 +103,7 @@ pipeline {
                     REVERT_STATUS = sh(returnStatus: true, script: "git revert ${COMMIT}")
                     //COMMIT_STATUS = sh(returnStatus: true, script: "git commit -am 'reverting to clean state'")
                     //COMMIT_STATUS = 0
-                    CHECKOUT_STATUS = sh(returnStatus: true, script: "git checkout -b ${env.GIT_BRANCH}")
+                    CHECKOUT_STATUS = sh(returnStatus: true, script: "git checkout -B ${env.GIT_BRANCH}")
                     echo "REVERT_STATUS = ${REVERT_STATUS}"
                     //echo "COMMIT_STATUS = ${COMMIT_STATUS}"
                     echo "CHECKOUT_status = ${CHECKOUT_STATUS}"
@@ -137,7 +137,7 @@ pipeline {
                     echo "password = ${GIT_AUTH_PSW}"
                     sh('''
                     git config --local credential.helper "!f() { echo username=\\$GIT_AUTH_USR; echo password=\\$GIT_AUTH_PSW; }; f"
-                    git push origin HEAD:${env.GIT_BRANCH}
+                    git push origin HEAD:dev
                     ''')
 
                     //GIT_DELETE = sh(returnStatus: true, script: "git branch -d ${env.GIT_BRANCH}")
